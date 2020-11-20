@@ -34,15 +34,17 @@ If you want a controlled install you can clone this repository to your local mac
 
 ### Builtins
 GBK also contains a couple of built-in functions, which are commands that are within the shell itself. Some of the built-ins are 
+
+|Builtin   | use|
 |----------|--------------------------------------------|
-`alias` | to create aliases|
-`help` | to get help on built-in functions |
-`cd` | change working directories|
-`history` | list of commands that have already been typed|
-`env` and `printenv` | prints environmental variables|
-`set` | sets new environmental variables|
-`exit` | exit out of gbk|
-`unset` | unsets envrionmental variables|
+|`alias` | to create aliases|
+|`help` | to get help on built-in functions |
+|`cd` | change working directories|
+|`history` | list of commands that have already been typed|
+|`env` and `printenv` | prints environmental variables|
+|`set` | sets new environmental variables|
+|`exit` | exit out of gbk|
+|`unset` | unsets envrionmental variables|
 
 
 ### Exiting commands and the shell
