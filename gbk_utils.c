@@ -84,16 +84,14 @@ void parseargs(char *cmd, const char *del, char ***args, int mod)
  *@input: pointer to the input string
  *@inputlen: pointer to the len of input
  *@cmds: pointer to the array of the parsed input
- *@fd: file descriptor
  *Return: lenght of input
  */
-int getinput(char **input, size_t *inputlen, char ***cmds, int fd)
+int getinput(char **input, size_t *inputlen, char ***cmds)
 {
-	int len, (*func)(char **, size_t *, int);
+	int len;
 
-	func = fd ? _getline : _getline2;
 	write(1, "#cisfun$ ", 9);
-	len = func(input, inputlen, fd);
+	len = _getline(input, inputlen, 0);
 	if (len == -1)
 	{
 		free(*input);
