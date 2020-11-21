@@ -33,7 +33,7 @@ int main(int argc, char **argv, char **argp)
 	sigaction(SIGINT, &sa, NULL);
 	while (1)
 	{
-		cmd = NULL, cmds = NULL, getinput(&cmd, &cmdlen, &cmds, mode ? 0 : 1);
+		cmd = NULL, cmds = NULL, getinput(&cmd, &cmdlen, &cmds);
 		cmdnum = arlen(cmds), i = 0;
 		free(cmd);
 		while (i < cmdnum)
