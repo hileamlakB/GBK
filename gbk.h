@@ -15,7 +15,11 @@
 #include <errno.h>
 #include <fcntl.h>
 
+/*Variables*/
+#define BUFFER_t 1024
+
 /*structs*/
+
 /**
  *struct cmdnode - a node for one command in a command list
  *@cmd: command string
@@ -49,7 +53,7 @@ typedef struct alias
 
 char *getfpath(char *);
 void parseargs(char *, const char *, char ***, int);
-int getinput(char **, size_t *, char ***, int);
+int getinput(char **, size_t *, char ***);
 void _printenv(void);
 void trims(char **, char *);
 
