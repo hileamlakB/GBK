@@ -153,3 +153,54 @@ char *_strtok(char *str, const char *delimeter, int whichf)
 	*(str + i) = '\0';
 	return (str);
 }
+
+
+/**
+ *_getline2 - gets a line of string from a file
+ *@lnptr: variable to store string
+ *@size: number of things stored
+ *@fd: file stream to read from
+ *Return: the lenghh of lnptr or -1 on failure
+ */
+int _getline2(char **lnptr, size_t *size, int fd)
+{
+	int in = 0, aloc = 0, x;
+	char *_lnptr = NULL, *tmp;
+
+	*lnptr = malloc(sizeof(char) * 3);
+	if (!*lnptr)
+		return (-1);
+	aloc = 3, _lnptr = *lnptr;
+	while (1)
+	{
+		if (in >= (aloc - 1))
+		{
+			aloc += 3, *lnptr = realloc(*lnptr, sizeof(char) * aloc);
+			if (!*lnptr)
+				return (-1);
+			_lnptr = *lnptr + in;
+		}
+		tmp = malloc(sizeof(char) * 1),	x = read(fd, tmp, 1);
+		if (x == 0)
+		{
+			free(tmp);
+			*_lnptr = '\n', *size += 1, in += 1;
+			return (in);
+		}
+		if (x < 0 && errno == EINTR)
+		{
+			free(tmp);
+			**lnptr = '\n',	*(*lnptr + 1) = '\n', *size = 2, in = 2;
+			return (in);
+		}
+		if (x < 0)
+			free(tmp), exit(-1);
+		if (*tmp == '\n')
+			*_lnptr = ';', in += 1, _lnptr += 1, *size += 1;
+		else
+			*_lnptr = *tmp, in += 1, _lnptr += 1, *size = in;
+		free(tmp);
+	}
+	return (in);
+}
+

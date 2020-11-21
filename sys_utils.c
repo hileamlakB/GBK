@@ -54,8 +54,11 @@ int runscript(char *name)
 }
 
 /**
- *execute - execute a process
+ *execute- execute a process by creating a child
  *@tmp: a double pointer coanting all the arguments
+ *@cmds: the cmds string to be deleted after execution failure
+ *@_head: the head of a command list to be destroyed
+ * incase of failure execution
  *Return: 0 on sucess and faliure number on failure
  */
 int execute(char **tmp, char *cmds, cmdnode *_head)
@@ -68,7 +71,10 @@ int execute(char **tmp, char *cmds, cmdnode *_head)
 	if (stat(fpath, &cmdinfo) == 0 && cmdinfo.st_mode & S_IXUSR)
 		exitstat = execve(fpath, tmp, environ);
 	else
+	{
+		exitstat = -1;
 		fprintf(stderr, "%s: command not found\n", tmp[0]);
+	}
 	free(fpath), freedp(tmp), free(cmds), free_cmdlist(_head);
 	exit(exitstat);
 

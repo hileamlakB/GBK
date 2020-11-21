@@ -38,7 +38,8 @@ int main(int argc, char **argv, char **argp)
 		free(cmd);
 		while (i < cmdnum)
 			xcmd(cmds[i], &head), i++;
-		freedp(cmds);
+		if (cmdnum > 0)
+			freedp(cmds);
 		if (mode)
 			write(1, "#cisfun$ ", 9), exit(255);
 	}
@@ -114,9 +115,9 @@ inline void xcmd(char *cmds, alias **aliashead)
 		whistory(cmds);
 		if (!handlebin(tmp, aliashead))
 		{
-			free_cmdlist(_head);
-		return;
-}
+			cmdmv(&head, 0);
+			continue;
+		}
 		if (head->estat == 0)
 		{
 			fflush(stdout);

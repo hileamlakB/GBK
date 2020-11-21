@@ -32,6 +32,8 @@ int add_node(cmdnode **head, char *cmd, char *op)
 }
 /**
  *build_list - builds a a command list based on cmds
+ * - parse the cmds if it has any ||
+ * -look for any &&'s and connecet the commands in the previous created list
  *@cmds: the command to be prepared into a list
  *Return: a pointer to the head of the created list
  */
@@ -41,41 +43,41 @@ cmdnode *build_list(char *cmds)
 	cmdnode *head = NULL, *_head = NULL, *tmp2 = NULL, *current, *previous = NULL;
 	int len, i = 0;
 
-	/*parse the cmds if it has any ||*/
 	parseargs(cmds, "||", &parsedcmd, 1), _parsedcmd = parsedcmd;
 	len = arlen(parsedcmd);
-	while (*_parsedcmd)
-		add_node(&head, *_parsedcmd, (len > 1) ? "||" : ""), _parsedcmd++;
-	freedp(parsedcmd);
-	/*look for any &&'s and connecet the commands in the previous created list*/
-	_head = head;
-	while (_head)
+	if (len > 0)
 	{
-		parseargs(_head->cmd, "&&", &tmp, 1), len = arlen(tmp);
-		if (len > 1)
+		while (*_parsedcmd)
+			add_node(&head, *_parsedcmd, (len > 1) ? "||" : ""), _parsedcmd++;
+		freedp(parsedcmd), _head = head;
+		while (_head)
 		{
-			i = 0;/*if && is found creat new list & put it in the middle*/
-			while (tmp[i])
-				add_node(&tmp2, tmp[i], "&&"), i++;
-			current = _head->next;
-			if (previous)
-				previous->next = tmp2;
-			else
-				head = tmp2;
-			while (tmp2->next)
+			parseargs(_head->cmd, "&&", &tmp, 1), len = arlen(tmp);
+			if (len > 1)
 			{
-				if (!(tmp2->next->next))
-					previous = tmp2;
-				tmp2 = tmp2->next;
+				i = 0;/*if && is found creat new list & put it in the middle*/
+				while (tmp[i])
+					add_node(&tmp2, tmp[i], "&&"), i++;
+				current = _head->next;
+				if (previous)
+					previous->next = tmp2;
+				else
+					head = tmp2;
+				while (tmp2->next)
+				{
+					if (!(tmp2->next->next))
+						previous = tmp2;
+					tmp2 = tmp2->next;
+				}
+				tmp2->next = current, free(tmp2->op), tmp2->op = strdup(_head->op);
+				free(_head->cmd), free(_head->op), free(_head), _head = tmp2, tmp2 = NULL;
 			}
-			tmp2->next = current, free(tmp2->op), tmp2->op = strdup(_head->op);
-			free(_head->cmd), free(_head->op), free(_head), _head = tmp2, tmp2 = NULL;
+			else
+				previous = _head, _head = _head->next;
+			freedp(tmp);
 		}
-		else
-			previous = _head, _head = _head->next;
-		freedp(tmp);
+		previous->op = strdup("");
 	}
-	previous->op = strdup("");
 	return (head);
 }
 

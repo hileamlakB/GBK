@@ -89,10 +89,11 @@ void parseargs(char *cmd, const char *del, char ***args, int mod)
  */
 int getinput(char **input, size_t *inputlen, char ***cmds, int fd)
 {
-	int len;
+	int len, (*func)(char **, size_t *, int);
 
+	func = fd ? _getline : _getline2;
 	write(1, "#cisfun$ ", 9);
-	len = _getline(input, inputlen, fd);
+	len = func(input, inputlen, fd);
 	if (len == -1)
 	{
 		free(*input);
