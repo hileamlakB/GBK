@@ -9,46 +9,44 @@
  */
 int _getline(char **lnptr, size_t *size, int fd)
 {
-	int in = 0, aloc = 0, x;
-	char *_lnptr = NULL, *tmp;
+	char buffer[BUFFER_t + 1];
+	int r = BUFFER_t, len = 0, mode = isatty(0);
+	char *tmp;
 
-	*lnptr = malloc(sizeof(char) * 3);
-	if (!*lnptr)
-		return (-1);
-	aloc = 3, _lnptr = *lnptr;
-	while (1)
+	/*mode == 1 -> interactive mode , mode == 0 non-interavtive mdoe*/
+	*lnptr = calloc(1, 1);
+	while (r == BUFFER_t)
 	{
-		if (in >= (aloc - 1))
+		if (*lnptr)/*if input exactly fits in the buffer*/
+			if ((*lnptr)[len - 1] == '\n' && mode)
+				break;
+		r = read(fd, buffer, BUFFER_t);
+		if (r < 0 && errno == EINTR)
 		{
-			aloc += 3, *lnptr = realloc(*lnptr, sizeof(char) * aloc);
-			if (!*lnptr)
-				return (-1);
-			_lnptr = *lnptr + in;
+			**lnptr = '\n',	*(*lnptr + 1) = '\n', len = 2;
+			return (len);
 		}
-		tmp = malloc(sizeof(char) * 1),	x = read(fd, tmp, 1);
-		if (x == 0)
-			exit(0);
-		if (x < 0 && errno == EINTR)
-		{
-			free(tmp);
-			**lnptr = '\n',	*(*lnptr + 1) = '\n', *size = 2, in = 2;
-			return (in);
-		}
-		if (x < 0)
-			free(tmp), exit(-1);
-		if (*tmp == '\n')
-		{
-			*_lnptr = '\n', *size += 1, in += 1;
-			/*handle inputs like \n*/
-			if (**lnptr == '\n')
-				*_lnptr++ = '\n', *size += 1, in += 1;
-			free(tmp);
-			return (in);
-		}
-		*_lnptr = *tmp, in += 1, _lnptr += 1, *size = in;
-		free(tmp);
+		if (r < 0)/*cant be read for some reason*/
+			exit(-1);
+		/*Ctrl-D pressed in interactive || EOF reached in none mode*/
+		if (r == 0 && mode)
+			return (-1);
+		tmp = realloc(*lnptr, strlen(*lnptr) + r + 4);
+		if (!tmp)
+			exit(-1);
+		*size = strlen(*lnptr) + r + 4, *lnptr = tmp;
+		buffer[r] = '\0', strcat(*lnptr, buffer), len += r;
+		if (!mode)/*rid of \n in non-interactive mode to handle multi-line cmds*/
+			fnrep(lnptr, "\n", ";");
 	}
-	return (in);
+	if (!mode)
+	{
+		tmp = realloc(*lnptr, strlen(*lnptr) + 3);
+		if (!tmp)
+			exit(-1);
+		(*lnptr)[len] = '\n', (*lnptr)[len + 1] = '\0';
+	}
+	return (len);
 }
 
 /**
@@ -147,60 +145,11 @@ char *_strtok(char *str, const char *delimeter, int whichf)
 		i++;
 
 	if (*(str + i) == '\0')
+	{
+		save = NULL;
 		return (str);
-
+	}
 	save = str + i + loc + 1;
 	*(str + i) = '\0';
 	return (str);
 }
-
-
-/**
- *_getline2 - gets a line of string from a file
- *@lnptr: variable to store string
- *@size: number of things stored
- *@fd: file stream to read from
- *Return: the lenghh of lnptr or -1 on failure
- */
-int _getline2(char **lnptr, size_t *size, int fd)
-{
-	int in = 0, aloc = 0, x;
-	char *_lnptr = NULL, *tmp;
-
-	*lnptr = malloc(sizeof(char) * 3);
-	if (!*lnptr)
-		return (-1);
-	aloc = 3, _lnptr = *lnptr;
-	while (1)
-	{
-		if (in >= (aloc - 1))
-		{
-			aloc += 3, *lnptr = realloc(*lnptr, sizeof(char) * aloc);
-			if (!*lnptr)
-				return (-1);
-			_lnptr = *lnptr + in;
-		}
-		tmp = malloc(sizeof(char) * 1),	x = read(fd, tmp, 1);
-		if (x == 0)
-		{
-			free(tmp);
-			*_lnptr = '\n', *size += 1, in += 1;
-			return (in);
-		}
-		if (x < 0 && errno == EINTR)
-		{
-			free(tmp);
-			**lnptr = '\n',	*(*lnptr + 1) = '\n', *size = 2, in = 2;
-			return (in);
-		}
-		if (x < 0)
-			free(tmp), exit(-1);
-		if (*tmp == '\n')
-			*_lnptr = ';', in += 1, _lnptr += 1, *size += 1;
-		else
-			*_lnptr = *tmp, in += 1, _lnptr += 1, *size = in;
-		free(tmp);
-	}
-	return (in);
-}
-
