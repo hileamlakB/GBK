@@ -1,6 +1,6 @@
 <p align="center">
 
-  <img src="generalbark.png" height="200\"/>
+  <img src="generalbark.png" height="300\"/>
 
 <br>
 
@@ -58,10 +58,9 @@ The user can also utilize the command `ctrl D` which will just exit. When the co
 * `help.h` : Header file, contains all the macros for the help section
 * `generalbark.png`: Image in the readme file
 
-###TODO'S
+### TODO'S
 
 ### Comments
 
 ### Authors
-* Hileamlak
-* Anthony
+* Hileamlak*
