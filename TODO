@@ -1,8 +1,8 @@
-1. when using non interactive mode handle new lines
-2. on task 8, use less read by using a buffer
+1. when using non interactive mode handle new lines [DONE]
+2. on task 8, use less read by using a buffer  [DONE]
 3. On task 12, handle errors well and print to sterr when found
 4. On task 16, make sure the aliases are also read and write to config files rather than just temporary linked listes
-5. Handle variables $$, *, and so on only $? and path variables work correctly
+5. Handle variables $?, *, and so on only $? and path variables work correctly
 	Handle other cases like *(file expansion and letter expansion) "" \ '' and all that good stuff
 6. pipes, redirections, stdins
 7. Handle arrows, handle tabs (autocomplete), 
