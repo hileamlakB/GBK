@@ -39,7 +39,7 @@ int arlen(char **a)
 */
 void trims(char **str, char *strt)
 {
-	char *new = malloc(sizeof(char) * 1), *_str = strt, *tmp;
+	char *new = smalloc(sizeof(char) * 1), *_str = strt, *tmp;
 	int first = 1, count = 1, index = 0;
 
 	*new = '\0';
@@ -51,7 +51,7 @@ void trims(char **str, char *strt)
 			count++, _str++;
 		else if (*_str != ' ')
 		{
-			tmp = malloc(sizeof(char) * (strlen(new) + 3));
+			tmp = smalloc(sizeof(char) * (strlen(new) + 3));
 			if (!tmp)
 				exit(-1);
 			strcpy(tmp, new);
@@ -65,4 +65,38 @@ void trims(char **str, char *strt)
 		}
 	}
 	*str = new;
+}
+/**
+ *smalloc - allocates a memory location and returns a pointer
+ *@size: amount to be  allocated
+ *Return: a generic pointer allocated or -1 on faliure
+ */
+void *smalloc(unsigned int size)
+{
+	void *pointer = malloc(size);
+
+	if (!pointer)
+	{
+		fprintf(stderr, "ERROR ALLOCATING MEMORY");
+		exit(-1);
+	}
+	return (pointer);
+}
+/**
+ *srealloc - rallocates a memory location and returns a pointer
+ *(safe realloc)
+ *@ptr: pointer to old mem location
+ *@size: new size
+ *Return: a generic pointer reallocated memory or -1 on faliure
+ */
+void *srealloc(void *ptr, unsigned int size)
+{
+	void *pointer = realloc(ptr, size);
+
+	if (!pointer)
+	{
+		fprintf(stderr, "ERROR REALLOCATING MEMORY");
+		exit(-1);
+	}
+	return (pointer);
 }

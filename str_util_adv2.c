@@ -9,7 +9,6 @@ int findd(char *str, char *tof)
 {
 	char *tokenized = NULL, *new = NULL;
 	int i = 0;
-
 	/*handle strdup faliures*/
 	new = strdup(str);
 	tokenized = _strtok(new, tof, 1);
@@ -34,17 +33,14 @@ int findd(char *str, char *tof)
  */
 int fnrep(char **str, char *torep, char *repwith)
 {
-	char *tokenized = NULL, *tmp, *new = malloc(1);
+	char *tokenized = NULL, *tmp, *new = smalloc(1);
 	int rep = 0, tor = findd(*str, torep);
 
 	tokenized = _strtok(*str, torep, 1);
-	/*handle new malloc fails*/
 	*new = '\0';
 	while (tokenized != NULL)
 	{
-		tmp = realloc(new, strlen(new) + strlen(tokenized) + strlen(repwith) +  2);
-		if (!tmp)
-			return (-1);
+		tmp = srealloc(new, strlen(new) + strlen(tokenized) + strlen(repwith) +  2);
 		new = tmp;
 		strcat(new, tokenized);
 		if (rep < tor)

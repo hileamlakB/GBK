@@ -1,10 +1,8 @@
 #include "gbk.h"
 
-
 static void handlerc(int);
 inline void cmdmv(cmdnode **, int);
-inline void xcmd(char *, alias **);
-
+inline void xcmd(char **, int, alias **);
 
 /**
  *main - main loop for the gbk shell
@@ -37,7 +35,7 @@ int main(int argc, char **argv, char **argp)
 		cmdnum = arlen(cmds), i = 0;
 		free(cmd);
 		while (i < cmdnum)
-			xcmd(cmds[i], &head), i++;
+			xcmd(cmds, i, &head), i++;
 		if (cmdnum > 0)
 			freedp(cmds);
 		if (mode)
@@ -72,6 +70,7 @@ inline void cmdmv(cmdnode **head, int childstat)
 	{
 		if (!childstat)
 		{
+			free((*head)->op);
 			(*head)->op = (*head)->next->op;
 			(*head)->next = (*head)->next->next;
 			(*head)->estat = 1;
@@ -86,6 +85,7 @@ inline void cmdmv(cmdnode **head, int childstat)
 			(*head)->estat = 1, (*head) = (*head)->next;
 		else
 		{
+			free((*head)->op);
 			(*head)->op = (*head)->next->op;
 			(*head)->next = (*head)->next->next;
 		}
@@ -96,13 +96,14 @@ inline void cmdmv(cmdnode **head, int childstat)
 /**
  *xcmd - parses, and uses the excute function
  *to creats a process and excute the cmd
- *@cmds: command
+ *@cmd_l: commands list
+ *@index: current command index
  *@aliashead: head of the laias list
  */
-inline void xcmd(char *cmds, alias **aliashead)
+inline void xcmd(char **cmd_l, int index, alias **aliashead)
 {
-	char **tmp = NULL;
-	int childid;
+	char **tmp = NULL, *cmds = cmd_l[index];
+	int childid, *binstat, exitstat;
 	static int childstat;
 	cmdnode *head = NULL, *_head = NULL;
 
@@ -113,27 +114,47 @@ inline void xcmd(char *cmds, alias **aliashead)
 		strexpand(&(head->cmd), childstat);
 		parseargs(head->cmd, " ", &tmp, 0);
 		whistory(cmds);
-		if (!handlebin(tmp, aliashead))
+		binstat = handlebin(tmp, aliashead);
+		if (!binstat[0])
 		{
+			if (binstat[1] != 266)
+			{
+				exitstat = binstat[1];
+				free(binstat), freedp(tmp), freedp(cmd_l), free_cmdlist(_head);
+				exit(exitstat);
+			}
 			cmdmv(&head, 0);
+			free(binstat);
 			continue;
 		}
+		free(binstat);
 		if (head->estat == 0)
 		{
 			fflush(stdout);
 			childid = fork();
+			if (childid < 0)
+			{
+				fprintf(stderr, "ERROR: coudn't creat a child proccess");
+				exit(-1);
+			}
 			if (childid == 0)
-				execute(tmp, cmds, _head);
+			{
+				childstat = execute(tmp);
+				freedp(tmp), freedp(cmd_l), free_cmdlist(_head);
+				exit(childstat);
+			}
 			else
 			{
 				wait(&childstat);
 				cmdmv(&head, childstat);
+				freedp(tmp);
 			}
 		}
 		else
 		{
 			if (!strcmp(head->op, "||"))
 			{
+				free(head->op);
 				head->op = head->next->op;
 				head->next = head->next->next;
 			}

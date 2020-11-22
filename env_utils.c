@@ -13,22 +13,16 @@ int _putenv(char *es)
 	while (*_environ)
 		len++, _environ++;
 	/*one for the new variable and the other for the null*/
-	newenviron = malloc(sizeof(char *) * (len + 2));
-	if (!newenviron)
-		return (-1);
+	newenviron = smalloc(sizeof(char *) * (len + 2));
 	_newenviron = newenviron;
 	_environ =  environ;
 	while (len)
 	{
-		*_newenviron = malloc(sizeof(char) * strlen(*_environ));
-		if (!*_newenviron)
-			return (-1);
+		*_newenviron = smalloc(sizeof(char) * strlen(*_environ));
 		strcpy(*_newenviron, *_environ);
 		_newenviron++, _environ++, len--;
 	}
-	*_newenviron = malloc(sizeof(char) * strlen(es));
-	if (!*_newenviron)
-		return (-1);
+	*_newenviron = smalloc(sizeof(char) * strlen(es));
 	strcpy(*_newenviron, es);
 	_newenviron++;
 	*_newenviron = NULL;
@@ -56,7 +50,7 @@ int _setenv(const char *name, const char *value, int overwrite)
 	if (overwrite)
 		_unsetenv(name);
 
-	es = malloc(strlen(name) + strlen(value) + 2);
+	es = smalloc(strlen(name) + strlen(value) + 2);
 	/* +2 for '=' and null terminator */
 	if (es == NULL)
 		return (-1);

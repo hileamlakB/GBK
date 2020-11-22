@@ -14,10 +14,11 @@ int _getline(char **lnptr, size_t *size, int fd)
 	char *tmp;
 
 	/*mode == 1 -> interactive mode , mode == 0 non-interavtive mdoe*/
-	*lnptr = calloc(1, 1);
+	*lnptr = (char *)smalloc(4);
+	**lnptr = '\0';
 	while (r == BUFFER_t)
 	{
-		if (*lnptr)/*if input exactly fits in the buffer*/
+		if (*lnptr && len > 0)/*if input exactly fits in the buffer*/
 			if ((*lnptr)[len - 1] == '\n' && mode)
 				break;
 		r = read(fd, buffer, BUFFER_t);
@@ -31,17 +32,15 @@ int _getline(char **lnptr, size_t *size, int fd)
 		/*Ctrl-D pressed in interactive || EOF reached in none mode*/
 		if (r == 0 && mode)
 			return (-1);
-		tmp = realloc(*lnptr, strlen(*lnptr) + r + 4);
-		if (!tmp)
-			exit(-1);
-		*size = strlen(*lnptr) + r + 4, *lnptr = tmp;
+		tmp = srealloc(*lnptr, len + r + 4);
+		*size = len + r + 4, *lnptr = tmp;
 		buffer[r] = '\0', strcat(*lnptr, buffer), len += r;
 		if (!mode)/*rid of \n in non-interactive mode to handle multi-line cmds*/
 			fnrep(lnptr, "\n", ";");
 	}
 	if (!mode)
 	{
-		tmp = realloc(*lnptr, strlen(*lnptr) + 3);
+		tmp = srealloc(*lnptr, strlen(*lnptr) + 3);
 		if (!tmp)
 			exit(-1);
 		(*lnptr)[len] = '\n', (*lnptr)[len + 1] = '\0';
@@ -69,7 +68,6 @@ int _strcmpd(char *fstring, const char *sub)
 		sub++;
 	}
 	return (-1);
-
 }
 /**
  *_strcmps - A special compare function that compares if part of a string
@@ -91,7 +89,6 @@ int _strcmps(char *fstring, const char *sub)
 		sub++, fstring++;
 	}
 	return (1);
-
 }
 
 /**
@@ -121,7 +118,6 @@ char *_strtok(char *str, const char *delimeter, int whichf)
 
 	func = (whichf == 0) ? _strcmpd : _strcmps;
 	loc = (whichf) ? strlen(delimeter) - 1 : 0;
-
 	if (!str || !*str)
 	{
 		if (!save || !*save)

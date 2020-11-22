@@ -13,7 +13,7 @@ int whistory(char *history)
 	int len = strlen(history);/* first = 0;*/
 
 
-	filename = malloc(strlen(h) + strlen(".simple_shell_history") + 4);
+	filename = smalloc(strlen(h) + strlen(".simple_shell_history") + 4);
 	strcpy(filename, h), strcat(filename, "/.simple_shell_history");
 	/*if (!stat(filename, &s))first = 1;*/
 	fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0640);
@@ -32,7 +32,7 @@ int whistory(char *history)
 	 */
 	if (len)
 	{
-		tmp = malloc(len + 4);
+		tmp = smalloc(len + 4);
 		strcpy(tmp, history), strcat(tmp, "\n");
 		w = write(fd, tmp, len + 1);
 		if (w < 0)
@@ -59,7 +59,7 @@ int phistory(void)
 	int fd, w = 1;
 	int counter = 0;
 
-	filename = malloc(strlen(h) + strlen(".simple_shell_history") + 4);
+	filename = smalloc(strlen(h) + strlen(".simple_shell_history") + 4);
 	strcpy(filename, h);
 	strcat(filename, "/.simple_shell_history");
 	fd = open(filename, O_RDONLY);

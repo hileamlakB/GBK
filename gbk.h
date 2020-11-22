@@ -59,13 +59,14 @@ void trims(char **, char *);
 
 /*builtins*/
 
-int handlebin(char **, alias **);
+int *handlebin(char **, alias **);
 
 /*memory_utils*/
 
 void freedp(char **);
 int arlen(char **);
-
+void *smalloc(unsigned int);
+void *srealloc(void *, unsigned int);
 /*string_advanced_utils*/
 
 int _getline(char **, size_t *, int);
@@ -95,7 +96,7 @@ int _unsetenv(const char *);
 /*sys_utils*/
 int _chdir(char *);
 int runscript(char *);
-int execute(char **, char *, cmdnode *);
+int execute(char **);
 
 /*expansion*/
 int strexpand(char **, int);

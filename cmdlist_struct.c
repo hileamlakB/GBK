@@ -12,11 +12,25 @@ int add_node(cmdnode **head, char *cmd, char *op)
 	cmdnode *newNode = malloc(sizeof(cmdnode));
 	cmdnode *current;
 
+	char *tmp;
+
 	if (!head || !newNode)
 		return (-1);
 	/*handle stdup failures*/
-	newNode->cmd = strdup(cmd);
-	newNode->op = strdup(op);
+	tmp = strdup(cmd);
+	if (!tmp)
+	{
+		fprintf(stderr, "ERROR: couldn't duplicate");
+		exit(-1);
+	}
+	newNode->cmd = tmp;
+	tmp = strdup(op);
+	if (!tmp)
+	{
+		fprintf(stderr, "ERROR: couldn't duplicate");
+		exit(-1);
+	}
+	newNode->op = tmp;
 	newNode->estat = 0;
 	newNode->next = NULL;
 	if (!*head)
@@ -76,7 +90,7 @@ cmdnode *build_list(char *cmds)
 				previous = _head, _head = _head->next;
 			freedp(tmp);
 		}
-		previous->op = strdup("");
+		free(previous->op), previous->op = strdup("");
 	}
 	return (head);
 }

@@ -10,15 +10,26 @@
 int add_alias(alias **head, char *key, char *value)
 {
 	alias *node, *_head;
+	char *tmp;
 
 	if (!head)
 		return (-1);
 
-	node = malloc(sizeof(alias));
-	if (!node)
-		return (-1);
-	node->key = strdup(key);
-	node->value = strdup(value);
+	node = smalloc(sizeof(alias));
+	tmp = strdup(key);
+	if (!tmp)
+	{
+		fprintf(stderr, "ERROR: couldn't duplicate");
+		exit(-1);
+	}
+	node->key = tmp;
+	tmp = strdup(value);
+	if (!tmp)
+	{
+		fprintf(stderr, "ERROR: couldn't duplicate");
+		exit(-1);
+	}
+	node->value = tmp;
 	node->next = NULL;
 	if (!*head)
 	{

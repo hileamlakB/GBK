@@ -16,21 +16,18 @@ char *getfpath(char *name)
 		return (NULL);
 	/*incase it is alreay a full path*/
 	/*
-	 *1. handle . && .., 2. handle calling gbk insided gbk
 	 *3. handle commands like /bin, that are like paths but dont do anythin
 	 */
 	if (*name == '/' || *name == '.')
 	{
-		fpath = malloc(strlen(name) * sizeof(char) + 1);
-		if (!fpath)
-			exit(-1);
+		fpath = smalloc(strlen(name) * sizeof(char) + 1);
 		strcpy(fpath, name);
 		return (fpath);
 	}
 	/*incase it is found in one of the path locations*/
 	while (tokenized)
 	{
-		fpath = malloc((strlen(tokenized) + strlen(name) + 1) * sizeof(char) + 1);
+		fpath = smalloc((strlen(tokenized) + strlen(name) + 1) * sizeof(char) + 1);
 		if (!fpath)
 			exit(-1);
 		strcpy(fpath, tokenized);
@@ -42,9 +39,7 @@ char *getfpath(char *name)
 		tokenized = _strtok(NULL, ":", 0);
 	}
 	/*incase it couldnt be found any where*/
-	fpath = malloc(strlen(name) * sizeof(char) + 1);
-	if (!fpath)
-		exit(-1);
+	fpath = smalloc(strlen(name) * sizeof(char) + 1);
 	strcpy(fpath, name);
 	return (fpath);
 }
@@ -58,7 +53,7 @@ char *getfpath(char *name)
  */
 void parseargs(char *cmd, const char *del, char ***args, int mod)
 {
-	char **tmp, *tokenized = NULL;
+	char *tokenized = NULL;
 	int index = 0;
 
 	*args = NULL;
@@ -66,11 +61,9 @@ void parseargs(char *cmd, const char *del, char ***args, int mod)
 	while (tokenized != NULL)
 	{
 		/*1 for the new string, 1 for the NULL*/
-		tmp = realloc(*args, (arlen(*args) +  2) * sizeof(char *));
-		if (!tmp)
-			exit(-1);
-		*args = tmp;
+		*args = srealloc(*args, (arlen(*args) +  2) * sizeof(char *));
 		(*args)[index] = NULL;
+		/*trim tokenized and store it in *args[index]*/
 		trims(&((*args)[index]), tokenized);
 		(*args)[index + 1] = NULL;
 		tokenized = _strtok(NULL, del, mod);

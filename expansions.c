@@ -11,10 +11,11 @@
 int strexpand(char **str, int childstat)
 {
 	char *pid = itoa(getpid()), *stat = itoa(childstat);
-	char *var = malloc(2), *tmp = NULL, *rep = NULL, *_str = NULL;
+	char *var = smalloc(2), *tmp = NULL, *rep = NULL, *_str = NULL;
 	int i = 0, j = 0;
 
-	fnrep(str, "$$", pid), fnrep(str, "$?", stat);
+	if (**str != '\n')
+		fnrep(str, "$$", pid), fnrep(str, "$?", stat);
 	free(pid), free(stat);
 	var[0] = 'k', var[1] = '\0';
 	while (*(*str + i))
@@ -26,17 +27,17 @@ int strexpand(char **str, int childstat)
 				j = 0;
 				while (*(*str + i + j) != ' ')
 				{
-					var = realloc(var, strlen(var) + 2);
+					var = srealloc(var, strlen(var) + 2);
 					*(var + j) = *(*str + i + j), *(var + j + 1) = '\0';
 					if (!(*str + i + j + 1))
 						break;
 					j++;
 				}
-				tmp = malloc(strlen(var)), strcpy(tmp, var + 1), rep = getenv(tmp);
+				tmp = smalloc(strlen(var)), strcpy(tmp, var + 1), rep = getenv(tmp);
 				if (rep)
 					fnrep(str, var, rep);
 				free(var), free(tmp);
-				var = (char *)malloc(2), var[0] = ' ', var[1] = '\0', tmp = NULL;
+				var = (char *)smalloc(2), var[0] = ' ', var[1] = '\0', tmp = NULL;
 			}
 		}
 		i++;
@@ -45,18 +46,20 @@ int strexpand(char **str, int childstat)
 	while (*_str++)
 		if (*_str == '#')
 			break;
-	*_str = '\0', free(var);
+	if (**str != '\n')
+		*_str = '\0';
+	free(var);
 	return (0);
 }
 /*
-*int main(void)
-*{
-*	char *str = calloc(26, sizeof(char));
-*
-*	strcpy(str, "echo $coled $$ $PATH $HOME $? # lotss\0");
-*	strexpand(&str, 90);
-*	printf("%s\n", str);
-*	free(str);
-*	return (0);
-*}
-*/
+ *int main(void)
+ *{
+ *	char *str = calloc(26, sizeof(char));
+ *
+ *	strcpy(str, "echo $coled $$ $PATH $HOME $? # lotss\0");
+ *	strexpand(&str, 90);
+ *	printf("%s\n", str);
+ *	free(str);
+ *	return (0);
+ *}
+ */
