@@ -10,11 +10,11 @@ int whistory(char *history)
 	char *filename, *h = getenv("HOME");
 	char *tmp = NULL;
 	ssize_t w, fd;
-	int len = strlen(history);/* first = 0;*/
+	int len = _strlen(history);/* first = 0;*/
 
 
-	filename = smalloc(strlen(h) + strlen(".simple_shell_history") + 4);
-	strcpy(filename, h), strcat(filename, "/.simple_shell_history");
+	filename = smalloc(_strlen(h) + _strlen(".simple_shell_history") + 4);
+	_strcpy(filename, h), _strcat(filename, "/.simple_shell_history");
 	/*if (!stat(filename, &s))first = 1;*/
 	fd = open(filename, O_RDWR | O_CREAT | O_APPEND, 0640);
 	free(filename);
@@ -33,7 +33,7 @@ int whistory(char *history)
 	if (len)
 	{
 		tmp = smalloc(len + 4);
-		strcpy(tmp, history), strcat(tmp, "\n");
+		_strcpy(tmp, history), _strcat(tmp, "\n");
 		w = write(fd, tmp, len + 1);
 		if (w < 0)
 		{
@@ -59,9 +59,9 @@ int phistory(void)
 	int fd, w = 1;
 	int counter = 0;
 
-	filename = smalloc(strlen(h) + strlen(".simple_shell_history") + 4);
-	strcpy(filename, h);
-	strcat(filename, "/.simple_shell_history");
+	filename = smalloc(_strlen(h) + _strlen(".simple_shell_history") + 4);
+	_strcpy(filename, h);
+	_strcat(filename, "/.simple_shell_history");
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (1);

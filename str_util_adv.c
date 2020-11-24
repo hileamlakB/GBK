@@ -34,13 +34,13 @@ int _getline(char **lnptr, size_t *size, int fd)
 			return (-1);
 		tmp = srealloc(*lnptr, len + r + 4);
 		*size = len + r + 4, *lnptr = tmp;
-		buffer[r] = '\0', strcat(*lnptr, buffer), len += r;
+		buffer[r] = '\0', _strcat(*lnptr, buffer), len += r;
 		if (!mode)/*rid of \n in non-interactive mode to handle multi-line cmds*/
 			fnrep(lnptr, "\n", ";");
 	}
 	if (!mode)
 	{
-		tmp = srealloc(*lnptr, strlen(*lnptr) + 3);
+		tmp = srealloc(*lnptr, _strlen(*lnptr) + 3);
 		if (!tmp)
 			exit(-1);
 		(*lnptr)[len] = '\n', (*lnptr)[len + 1] = '\0';
@@ -59,7 +59,9 @@ int _strcmpd(char *fstring, const char *sub)
 {
 	if (!fstring || !sub)
 		return (-1);
-	if (strlen(fstring) < strlen(sub))
+	if (!*fstring)
+		return (-1);
+	if (_strlen(fstring) < _strlen(sub))
 		return (-1);
 	while (*sub)
 	{
@@ -80,7 +82,9 @@ int _strcmps(char *fstring, const char *sub)
 {
 	if (!fstring || !sub)
 		return (-1);
-	if (strlen(fstring) < strlen(sub))
+	if (!*fstring)
+		return (-1);
+	if (_strlen(fstring) < _strlen(sub))
 		return (-1);
 	while (*sub && *fstring)
 	{
@@ -117,7 +121,7 @@ char *_strtok(char *str, const char *delimeter, int whichf)
 	int i = 0, (*func)(char *, const char *), loc;
 
 	func = (whichf == 0) ? _strcmpd : _strcmps;
-	loc = (whichf) ? strlen(delimeter) - 1 : 0;
+	loc = (whichf) ? _strlen(delimeter) - 1 : 0;
 	if (!str || !*str)
 	{
 		if (!save || !*save)

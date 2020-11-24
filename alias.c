@@ -10,26 +10,13 @@
 int add_alias(alias **head, char *key, char *value)
 {
 	alias *node, *_head;
-	char *tmp;
 
 	if (!head)
 		return (-1);
 
 	node = smalloc(sizeof(alias));
-	tmp = strdup(key);
-	if (!tmp)
-	{
-		fprintf(stderr, "ERROR: couldn't duplicate");
-		exit(-1);
-	}
-	node->key = tmp;
-	tmp = strdup(value);
-	if (!tmp)
-	{
-		fprintf(stderr, "ERROR: couldn't duplicate");
-		exit(-1);
-	}
-	node->value = tmp;
+	node->key = _strdup(key);
+	node->value = _strdup(value);
 	node->next = NULL;
 	if (!*head)
 	{
@@ -72,14 +59,14 @@ int print_alias(alias *head, char *key)
 		return (-1);
 	while (head)
 	{
-		if (!strcmp(head->key, key))
+		if (!_strcmp(head->key, key))
 		{
 			printf("alias %s='%s'\n", head->key, head->value);
 			return (0);
 		}
 		head = head->next;
 	}
-	fprintf(stderr, "gbk: alias: %s: not found'\n", key);
+	perror("alias key not found");
 	return (-1);
 }
 
@@ -146,20 +133,20 @@ int freealias(alias *head)
  *
  *	alias *head = NULL;
  *	char **arg = malloc(sizeof(char *) * 6);
- *	arg[0] = malloc(strlen("alias") + 3);
- *	strcpy(arg[0], "alias");
+ *	arg[0] = malloc(_strlen("alias") + 3);
+ *	_strcpy(arg[0], "alias");
  *
- *	arg[1] = malloc(strlen("ls") + 3);
- *	strcpy(arg[1], "ls");
+ *	arg[1] = malloc(_strlen("ls") + 3);
+ *	_strcpy(arg[1], "ls");
  *
- *	arg[2] = malloc(strlen("lk=lm") + 3);
- *	strcpy(arg[2], "lk=lm");
+ *	arg[2] = malloc(_strlen("lk=lm") + 3);
+ *	_strcpy(arg[2], "lk=lm");
  *
- *	arg[3] = malloc(strlen("third") + 3);
- *	strcpy(arg[3], "third");
+ *	arg[3] = malloc(_strlen("third") + 3);
+ *	_strcpy(arg[3], "third");
  *
- *	arg[4] = malloc(strlen("pl") + 3);
- *	strcpy(arg[4], "pl");
+ *	arg[4] = malloc(_strlen("pl") + 3);
+ *	_strcpy(arg[4], "pl");
  *
  *	arg[5] = NULL;
  *	don't add before you check that the string isnt on your alias list

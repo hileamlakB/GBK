@@ -12,16 +12,16 @@ int _chdir(char *path)
 	char *currentdir = getenv("PWD"), *buf = NULL;
 	size_t size = 0;
 
-	if (!path || !strcmp(path, "~"))
+	if (!path || !_strcmp(path, "~"))
 		status = chdir(getenv("HOME"));
-	else if (!strcmp(path, "-"))
+	else if (!_strcmp(path, "-"))
 		status = chdir(getenv("OLDPWD"));
 	else
 		status = chdir(path);
 	if (status < -1)
 	{
 
-		fprintf(stderr, "%s\n", strerror(errno));
+		perror("Couldn't change directory");
 		return (-1);
 	}
 
@@ -43,7 +43,7 @@ int runscript(char *name)
 	path = realpath(name, NULL);
 	if (!path)
 	{
-		fprintf(stderr, "gbk: %s: No such file or directory", name);
+		perror("No such file or directory");
 		return (-1);
 	}
 	system(path);
@@ -70,7 +70,7 @@ inline int execute(char **tmp)
 	else
 	{
 		exitstat = -1;
-		fprintf(stderr, "%s: command not found\n", tmp[0]);
+		perror("Command not found");
 	}
 	free(fpath);
 	return (exitstat);

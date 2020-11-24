@@ -9,28 +9,14 @@
  */
 int add_node(cmdnode **head, char *cmd, char *op)
 {
-	cmdnode *newNode = malloc(sizeof(cmdnode));
+	cmdnode *newNode = smalloc(sizeof(cmdnode));
 	cmdnode *current;
 
-	char *tmp;
-
-	if (!head || !newNode)
+	if (!head)
 		return (-1);
 	/*handle stdup failures*/
-	tmp = strdup(cmd);
-	if (!tmp)
-	{
-		fprintf(stderr, "ERROR: couldn't duplicate");
-		exit(-1);
-	}
-	newNode->cmd = tmp;
-	tmp = strdup(op);
-	if (!tmp)
-	{
-		fprintf(stderr, "ERROR: couldn't duplicate");
-		exit(-1);
-	}
-	newNode->op = tmp;
+	newNode->cmd = _strdup(cmd);
+	newNode->op = _strdup(op);
 	newNode->estat = 0;
 	newNode->next = NULL;
 	if (!*head)
@@ -83,14 +69,14 @@ cmdnode *build_list(char *cmds)
 						previous = tmp2;
 					tmp2 = tmp2->next;
 				}
-				tmp2->next = current, free(tmp2->op), tmp2->op = strdup(_head->op);
+				tmp2->next = current, free(tmp2->op), tmp2->op = _strdup(_head->op);
 				free(_head->cmd), free(_head->op), free(_head), _head = tmp2, tmp2 = NULL;
 			}
 			else
 				previous = _head, _head = _head->next;
 			freedp(tmp);
 		}
-		free(previous->op), previous->op = strdup("");
+		free(previous->op), previous->op = _strdup("");
 	}
 	return (head);
 }
@@ -142,11 +128,11 @@ void free_cmdlist(cmdnode *head)
  */
 cmdnode *add_nodein(cmdnode **head, char *cmd, char *operator, int pos)
 {
-	cmdnode *newNode = malloc(sizeof(cmdnode));
+	cmdnode *newNode = smalloc(sizeof(cmdnode));
 	cmdnode *current = NULL, *tmp = NULL;
 	int i = 1;
 
-	if (!head || !newNode)
+	if (!head)
 		return (NULL);
 	newNode->cmd = cmd;
 	newNode->op = operator;
@@ -167,23 +153,23 @@ cmdnode *add_nodein(cmdnode **head, char *cmd, char *operator, int pos)
 /*
  *int main(void)
  *{
- *	char *cmd = malloc(strlen("ls||cat file && grep io *||op
+ *	char *cmd = malloc(_strlen("ls||cat file && grep io *||op
  *&& pop && kl") + 3);
  *	cmdnode *none;
- *	char *cmd2 = malloc(strlen("ls||none||cat file&&grep||io *
+ *	char *cmd2 = malloc(_strlen("ls||none||cat file&&grep||io *
  *||op&&pop&&kl||pol&&kl||po") + 3);
  *	cmdnode *none2;
  *
  *
  *	printf("ls||cat file && grep io *||op && pop && kl\n");
- *	strcpy(cmd, "ls||cat file && grep io *||op && pop && kl");
+ *	_strcpy(cmd, "ls||cat file && grep io *||op && pop && kl");
  *	none = build_list(cmd);
  *	print_cmdnodes(none);
  *	free_cmdlist(none);
  *
  *	printf("\n\nls||none||cat file&&grep||io *||op&&pop&&kl
  *||pol&&kl||po\n");
- *	strcpy(cmd2, "ls||none||cat file&&grep||io *||op&&pop&&kl
+ *	_strcpy(cmd2, "ls||none||cat file&&grep||io *||op&&pop&&kl
  *||pol&&kl||po");
  *	none2 = build_list(cmd2);
  *	print_cmdnodes(none2);

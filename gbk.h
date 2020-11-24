@@ -2,9 +2,8 @@
 #define GBK
 
 /*necessary libs*/
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdio.h>
 
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -67,6 +66,10 @@ void freedp(char **);
 int arlen(char **);
 void *smalloc(unsigned int);
 void *srealloc(void *, unsigned int);
+
+
+/*memory_utils*/
+char **sarrdup(char **);
 /*string_advanced_utils*/
 
 int _getline(char **, size_t *, int);

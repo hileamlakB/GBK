@@ -51,10 +51,10 @@ void trims(char **str, char *strt)
 			count++, _str++;
 		else if (*_str != ' ')
 		{
-			tmp = smalloc(sizeof(char) * (strlen(new) + 3));
+			tmp = smalloc(sizeof(char) * (_strlen(new) + 3));
 			if (!tmp)
 				exit(-1);
-			strcpy(tmp, new);
+			_strcpy(tmp, new);
 			if (count > 1)
 				tmp[index] = ' ', index++;
 
@@ -73,11 +73,11 @@ void trims(char **str, char *strt)
  */
 void *smalloc(unsigned int size)
 {
-	void *pointer = malloc(size);
+	void *pointer = calloc(size, 1);
 
 	if (!pointer)
 	{
-		fprintf(stderr, "ERROR ALLOCATING MEMORY");
+		perror("ERROR ALLOCATING MEMORY");
 		exit(-1);
 	}
 	return (pointer);
@@ -95,7 +95,7 @@ void *srealloc(void *ptr, unsigned int size)
 
 	if (!pointer)
 	{
-		fprintf(stderr, "ERROR REALLOCATING MEMORY");
+		perror("ERROR REALLOCATING MEMORY");
 		exit(-1);
 	}
 	return (pointer);

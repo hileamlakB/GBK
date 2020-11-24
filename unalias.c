@@ -13,7 +13,7 @@ int remove_alias(alias **head, char *key)
 	if (!*head)
 		return (-1);
 
-	if (!strcmp((*head)->key, key))
+	if (!_strcmp((*head)->key, key))
 	{
 		_head = *head;
 		*head = (*head)->next;
@@ -25,7 +25,7 @@ int remove_alias(alias **head, char *key)
 	_head = *head;
 	while (_head->next)
 	{
-		if (!strcmp(_head->next->key, key))
+		if (!_strcmp(_head->next->key, key))
 		{
 			tmp = _head->next;
 			_head->next = _head->next->next;

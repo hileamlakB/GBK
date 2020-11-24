@@ -20,27 +20,25 @@ char *getfpath(char *name)
 	 */
 	if (*name == '/' || *name == '.')
 	{
-		fpath = smalloc(strlen(name) * sizeof(char) + 1);
-		strcpy(fpath, name);
+		fpath = smalloc(_strlen(name) * sizeof(char) + 1);
+		_strcpy(fpath, name);
 		return (fpath);
 	}
 	/*incase it is found in one of the path locations*/
 	while (tokenized)
 	{
-		fpath = smalloc((strlen(tokenized) + strlen(name) + 1) * sizeof(char) + 1);
-		if (!fpath)
-			exit(-1);
-		strcpy(fpath, tokenized);
-		strcat(fpath, "/");
-		strcat(fpath, name);
+		fpath = smalloc((_strlen(tokenized) + _strlen(name) + 1) * sizeof(char) + 1);
+		_strcpy(fpath, tokenized);
+		_strcat(fpath, "/");
+		_strcat(fpath, name);
 		if (!stat(fpath, &fileinfo))
 			return (fpath);
 		free(fpath);
 		tokenized = _strtok(NULL, ":", 0);
 	}
 	/*incase it couldnt be found any where*/
-	fpath = smalloc(strlen(name) * sizeof(char) + 1);
-	strcpy(fpath, name);
+	fpath = smalloc(_strlen(name) * sizeof(char) + 1);
+	_strcpy(fpath, name);
 	return (fpath);
 }
 

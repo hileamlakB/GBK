@@ -1,4 +1,5 @@
 #include "gbk.h"
+
 /**
  *_putenv - addes es to environ
  *@es: environmnetal varibale value pair
@@ -12,20 +13,22 @@ int _putenv(char *es)
 
 	while (*_environ)
 		len++, _environ++;
-	/*one for the new variable and the other for the null*/
-	newenviron = smalloc(sizeof(char *) * (len + 2));
+	/*one for the new variable and the other for the null 2 for saftey*/
+	newenviron = smalloc(sizeof(char *) * (len + 4));
 	_newenviron = newenviron;
 	_environ =  environ;
 	while (len)
 	{
-		*_newenviron = smalloc(sizeof(char) * strlen(*_environ));
-		strcpy(*_newenviron, *_environ);
+		*_newenviron = smalloc(sizeof(char) * _strlen(*_environ) + 4);
+		_strcpy(*_newenviron, *_environ);
 		_newenviron++, _environ++, len--;
 	}
-	*_newenviron = smalloc(sizeof(char) * strlen(es));
-	strcpy(*_newenviron, es);
+	*_newenviron = smalloc(sizeof(char) * _strlen(es) + 4);
+	_strcpy(*_newenviron, es);
+	free(es);
 	_newenviron++;
 	*_newenviron = NULL;
+	freedp(environ);
 	environ = newenviron;
 	return (0);
 }
@@ -50,14 +53,14 @@ int _setenv(const char *name, const char *value, int overwrite)
 	if (overwrite)
 		_unsetenv(name);
 
-	es = smalloc(strlen(name) + strlen(value) + 2);
+	es = smalloc(_strlen(name) + _strlen(value) + 2);
 	/* +2 for '=' and null terminator */
 	if (es == NULL)
 		return (-1);
 
-	strcpy(es, name);
-	strcat(es, "=");
-	strcat(es, value);
+	_strcpy(es, (char *)name);
+	_strcat(es, "=");
+	_strcat(es, (char *)value);
 
 	return ((_putenv(es) != 0) ? -1 : 0);
 }
@@ -72,13 +75,13 @@ int _unsetenv(const char *name)
 	char **ep, **sp;
 	size_t len;
 
-	if (name == NULL || name[0] == '\0' || strchr(name, '=') != NULL)
+	if (name == NULL || name[0] == '\0' || findd((char *)name, "=") != 0)
 		return (-1);
 
-	len = strlen(name);
+	len = _strlen(name);
 
 	for (ep = environ; *ep != NULL; )
-		if (strncmp(*ep, name, len) == 0 && (*ep)[len] == '=')
+		if (_strcmp(*ep, (char *)name) == 0 && (*ep)[len] == '=')
 			/*
 			*Remove found entry by shifting
 			*all successive entries back one element

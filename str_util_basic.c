@@ -26,15 +26,12 @@ int _strlen(const char *str)
  */
 char *_strcat(char *dest, char *src)
 {
-	char *cat = dest + _strlen(dest);
-	int length =  strlen(dest) + strlen(src);
+	char *ptr = dest + _strlen(dest);
 
 	while (*src)
-		*cat += *src, src += 1, cat += 1;
-
-	*cat += '\0', cat -= (length), *dest = *cat;
-
-	return (cat);
+		*ptr++ = *src++;
+	*ptr = '\0';
+	return (dest);
 }
 /**
  * _strdup - returns a pointer to a newly allocated space in memory,
@@ -49,9 +46,7 @@ char *_strdup(char *str)
 
 	if (!str)
 		return (NULL);
-	copy = malloc((strlen(str) + 1) * sizeof(char));
-	if (!copy)
-		return (NULL);
+	copy = smalloc((_strlen(str) + 1) * sizeof(char));
 	_copy = copy;
 
 	while (*str)
@@ -69,18 +64,20 @@ char *_strdup(char *str)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int equal = 0;
+	if (!s1 && s2)
+		return (-1);
+	if (!s2 && s1)
+		return (-1);
 
 	while (*s1)
 	{
 		if (*s1 != *s2)
-		{
-			equal = ((int)*s1 - 48) - ((int)*s2 - 48);
 			break;
-		}
-		s1 += 1, s2 += 1;
+		s1++, s2++;
 	}
-	return (equal);
+
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+
 }
 
 /**

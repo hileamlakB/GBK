@@ -3,7 +3,6 @@
 static void handlerc(int);
 inline void cmdmv(cmdnode **, int);
 inline void xcmd(char **, int, alias **);
-
 /**
  *main - main loop for the gbk shell
  *@argc: number of arguments
@@ -19,6 +18,7 @@ int main(int argc, char **argv, char **argp)
 	struct sigaction sa;
 	alias *head = NULL;
 
+	environ = sarrdup(environ);
 	if (argc > 1)
 	{
 		runscript(argv[1]);
@@ -41,9 +41,9 @@ int main(int argc, char **argv, char **argp)
 		if (mode)
 			write(1, "#cisfun$ ", 9), exit(255);
 	}
+	free(environ);
 	exit(EXIT_SUCCESS);
 }
-
 
 /**
  *handlerc - handlce SIGNUM
@@ -65,21 +65,27 @@ static void handlerc(int signum)
  */
 inline void cmdmv(cmdnode **head, int childstat)
 {
+	cmdnode *tmp = NULL;
 
-	if (!strcmp((*head)->op, "||"))
+	if (!_strcmp((*head)->op, "||"))
 	{
 		if (!childstat)
 		{
 			free((*head)->op);
 			(*head)->op = (*head)->next->op;
-			(*head)->next = (*head)->next->next;
+
+			tmp = (*head)->next->next;
+
+			free((*head)->next->cmd);
+			free((*head)->next);
+			(*head)->next = tmp;
 			(*head)->estat = 1;
 		}
 		else
 			(*head) = (*head)->next;
 
 	}
-	else if (!strcmp((*head)->op, "&&"))
+	else if (!_strcmp((*head)->op, "&&"))
 	{
 		if (!childstat)
 			(*head)->estat = 1, (*head) = (*head)->next;
@@ -87,7 +93,11 @@ inline void cmdmv(cmdnode **head, int childstat)
 		{
 			free((*head)->op);
 			(*head)->op = (*head)->next->op;
-			(*head)->next = (*head)->next->next;
+			tmp = (*head)->next->next;
+
+			free((*head)->next->cmd);
+			free((*head)->next);
+			(*head)->next = tmp;
 		}
 	}
 	else
@@ -107,8 +117,7 @@ inline void xcmd(char **cmd_l, int index, alias **aliashead)
 	static int childstat;
 	cmdnode *head = NULL, *_head = NULL;
 
-	_head = build_list(cmds);
-	head = _head;
+	_head = build_list(cmds), head = _head;
 	while (head)
 	{
 		strexpand(&(head->cmd), childstat);
@@ -120,11 +129,11 @@ inline void xcmd(char **cmd_l, int index, alias **aliashead)
 			if (binstat[1] != 266)
 			{
 				exitstat = binstat[1];
-				free(binstat), freedp(tmp), freedp(cmd_l), free_cmdlist(_head);
+				freedp(environ), free(binstat), freedp(tmp);
+				freedp(cmd_l), free_cmdlist(_head);
 				exit(exitstat);
 			}
-			cmdmv(&head, 0);
-			free(binstat);
+			cmdmv(&head, 0), free(binstat);
 			continue;
 		}
 		free(binstat);
@@ -134,25 +143,24 @@ inline void xcmd(char **cmd_l, int index, alias **aliashead)
 			childid = fork();
 			if (childid < 0)
 			{
-				fprintf(stderr, "ERROR: coudn't creat a child proccess");
+				perror("ERROR: coudn't creat a child proccess");
 				exit(-1);
 			}
 			if (childid == 0)
 			{
 				childstat = execute(tmp);
-				freedp(tmp), freedp(cmd_l), free_cmdlist(_head);
+				freedp(environ), freedp(tmp), freedp(cmd_l), free_cmdlist(_head);
 				exit(childstat);
 			}
 			else
 			{
 				wait(&childstat);
 				cmdmv(&head, childstat);
-				freedp(tmp);
 			}
 		}
 		else
 		{
-			if (!strcmp(head->op, "||"))
+			if (!_strcmp(head->op, "||"))
 			{
 				free(head->op);
 				head->op = head->next->op;
@@ -161,6 +169,8 @@ inline void xcmd(char **cmd_l, int index, alias **aliashead)
 			else
 				head = head->next;
 		}
+		freedp(tmp);
 	}
 	free_cmdlist(_head);
 }
+

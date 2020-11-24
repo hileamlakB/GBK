@@ -27,13 +27,13 @@ int strexpand(char **str, int childstat)
 				j = 0;
 				while (*(*str + i + j) != ' ')
 				{
-					var = srealloc(var, strlen(var) + 2);
+					var = srealloc(var, _strlen(var) + 2);
 					*(var + j) = *(*str + i + j), *(var + j + 1) = '\0';
 					if (!(*str + i + j + 1))
 						break;
 					j++;
 				}
-				tmp = smalloc(strlen(var)), strcpy(tmp, var + 1), rep = getenv(tmp);
+				tmp = smalloc(_strlen(var)), _strcpy(tmp, var + 1), rep = getenv(tmp);
 				if (rep)
 					fnrep(str, var, rep);
 				free(var), free(tmp);
@@ -56,7 +56,7 @@ int strexpand(char **str, int childstat)
  *{
  *	char *str = calloc(26, sizeof(char));
  *
- *	strcpy(str, "echo $coled $$ $PATH $HOME $? # lotss\0");
+ *	_strcpy(str, "echo $coled $$ $PATH $HOME $? # lotss\0");
  *	strexpand(&str, 90);
  *	printf("%s\n", str);
  *	free(str);
