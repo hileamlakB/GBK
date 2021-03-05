@@ -1,4 +1,4 @@
-#include "gbk.h"
+#include "../gbk.h"
 
 /**
  * whistory - writes history of commands

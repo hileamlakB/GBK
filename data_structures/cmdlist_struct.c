@@ -1,4 +1,4 @@
-#include "gbk.h"
+#include "../gbk.h"
 
 /**
  * add_node - adds a new node at the end of a cmdnode

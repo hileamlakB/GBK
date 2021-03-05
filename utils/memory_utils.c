@@ -1,4 +1,4 @@
-#include "gbk.h"
+#include "../gbk.h"
 
 /**
  *freedp - frees a double pointer that has been correctly allocated

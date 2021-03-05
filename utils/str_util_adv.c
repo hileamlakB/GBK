@@ -1,4 +1,4 @@
-#include "gbk.h"
+#include "../gbk.h"
 
 /**
  *_getline - gets a line of string from a file

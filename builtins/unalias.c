@@ -1,4 +1,4 @@
-#include "gbk.h"
+#include "../gbk.h"
 
 /**
  *remove_alias - remove a node with a key key from a linked list

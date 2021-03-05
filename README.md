@@ -1,6 +1,6 @@
 <p align="center">
 
-  <img src="generalbark.png" height="300\"/>
+  <img src="assets/generalbark.png" height="300\"/>
 
 <br>
 
@@ -8,11 +8,24 @@
 <h1><p align="center">General Bark - A C based shell</h1></p></font>
 
 # General Bark
-General Bark is a shell on top of the Kernal, hence the title general. Its task is to wrap around the Kernal and make interaction more civil, hence the name Bark, like the tree bark. The general takes most of the basics of commands that are present in the bash shell and communicate them to the Kernal in a soldierly manner. This is shell is built as part of a learning C.
 
-`General` works like the bash and other basic C shells, though it has some to be yet build features.
+General Bark is a shell on top of the Kernal, hence the title general.
+Its task is to wrap around the Kernal and make interaction more civil,
+hence the name Bark, like the tree bark. The general takes most of the 
+basics of commands that are present in the bash shell and communicate 
+them to the Kernal in a soldierly manner. This is shell is built as part 
+of a learning C. The initial project was done as a group project and 
+was hosted here [here](https://github.com/hileamlakB/simple_shell). 
+The group project was  great and I leanred a lot from it. I amm rebuilding
+this one again from the in order to learn the other parts of the project
+my team mate worked one.
+
+`General` works like the bash and other basic C shells, though it has some 
+to be yet build features.
 
 The General can be compiled with GCC >=4.8.5.
+
+## File
 
 ## Example of how to launch the shell after compiling:
 `./gbk`
@@ -20,16 +33,42 @@ The General can be compiled with GCC >=4.8.5.
 * Output: prompt to terminal: `$ `
 
 ## Syntax
-The shell works by using commands given by the user input. The shell commands take in the following syntax: `command name {arguments}[;||&& other command]`. The shell executes a command after it is written by user using the command followed by the arguments until all the commands in one line are complered
+
+The shell works by using commands given by the user input. The shell commands 
+take in the following syntax: `command name {arguments}[;||&& other command]`. 
+The shell executes a command after it is written by user using the command 
+followed by the arguments until all the commands in one line are completed
 
 `cat gbk.h`
-The above example takes in a command by the user followed with the arguments. In this case the command is `cat` (to view file without opening file) followed by argument the file name in this case `gbk.h`.
 
-For more information on cat, you can use the `man` command which will show a manual of the given command or any command you wish to know more information on. It contains system calls, libraries and other important files.
+The above example takes in a command by the user followed with the arguments. 
+In this case the command is `cat` (to view file without opening file) followed 
+by argument the file name in this case `gbk.h`.
+
+For more information on cat, you can use the `man` command which will show a manual 
+of the given command or any command you wish to know more information on.
 
 
 ### Compilation and installation
-If you want a controlled install you can clone this repository to your local machine and compile all the `c` files using `GCC`, but if you are looking for a binary you can run just like any program, such as bash, you can get a detailed instruction here and also a downloading link.
+
+
+If you want a controlled install you can clone this repository to your local machine 
+and compile all the `c` files using `GCC`, but if you are looking for a binary you can run
+the program just like others, such as bash. But depending on your machine the compiled version
+might not work so you can compile the program as follows.
+
+First
+```
+git clone https://github.com/hileamlakB/GBK.git
+```
+Then
+```
+cd GBK
+```
+After this you can use the make file to compile every thing as follows
+```
+make
+```
 
 
 ### Builtins

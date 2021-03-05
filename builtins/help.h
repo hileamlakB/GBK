@@ -1,7 +1,7 @@
 #ifndef HDETAILS
 #define HDETAILS
 
-#include "gbk.h"
+#include "../gbk.h"
 
 #define exit_h1 "\texit usage: exit N\n\tExit the shell.\n\n"
 #define exit_h2 "\tExits the shell with a status of N.  If N is omitted,"

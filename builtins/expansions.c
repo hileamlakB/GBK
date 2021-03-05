@@ -1,12 +1,12 @@
-#include "gbk.h"
+#include "../gbk.h"
 
 /**
- *strexpand - expands a variabless like the shell does
- *gets rid of commented commands also expands
- *$$, $?
- *@str: string containging variables to be expanded
- *@childstat: the last exit status of the child process
- *Return: 0 on sucess and -1 on error
+ * strexpand - expands a variables like the shell does
+ * gets rid of commented commands also expands
+ * $$, $?
+ * @str: string containing variables to be expanded
+ * @childstat: the exit status of the last child process if any
+ * Return: 0 on sucess and -1 on error
  */
 int strexpand(char **str, int childstat)
 {
@@ -51,7 +51,7 @@ int strexpand(char **str, int childstat)
 	free(var);
 	return (0);
 }
-/*
+/* Test
  *int main(void)
  *{
  *	char *str = calloc(26, sizeof(char));

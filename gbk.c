@@ -1,8 +1,8 @@
 #include "gbk.h"
 
 static void handlerc(int);
-inline void cmdmv(cmdnode **, int);
-inline void xcmd(char **, int, alias **);
+void cmdmv(cmdnode **, int);
+void xcmd(char **, int, alias **);
 /**
  *main - main loop for the gbk shell
  *@argc: number of arguments
@@ -63,7 +63,7 @@ static void handlerc(int signum)
  *@childstat: the status of the execution of the current command
  *node
  */
-inline void cmdmv(cmdnode **head, int childstat)
+void cmdmv(cmdnode **head, int childstat)
 {
 	cmdnode *tmp = NULL;
 
@@ -110,7 +110,7 @@ inline void cmdmv(cmdnode **head, int childstat)
  *@index: current command index
  *@aliashead: head of the laias list
  */
-inline void xcmd(char **cmd_l, int index, alias **aliashead)
+void xcmd(char **cmd_l, int index, alias **aliashead)
 {
 	char **tmp = NULL, *cmds = cmd_l[index];
 	int childid, *binstat, exitstat;

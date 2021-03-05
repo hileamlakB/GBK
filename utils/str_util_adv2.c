@@ -1,4 +1,4 @@
-#include "gbk.h"
+#include "../gbk.h"
 /**
  *findd - finds the number occurance of tof in str
  *@str: string to be searched
