@@ -29,41 +29,6 @@ After this you can use the make file to compile every thing as follows
 ```
 make
 ```
-## Syntax
-
-The shell operates using commands inputted by the user, taking the following syntax: `command name {arguments}[;||&& other command]`. The shell will execute the command along with its arguments until all commands in one line are completed. For example, `cat gbk.h` will take in the command `cat` (to view a file without opening it) followed by the argument `gbk.h` (the file name).
-
-## Built-ins
-
-General Bark also includes built-in functions, which are commands within the shell itself. Some of these built-ins include `alias`, `help`, `cd`, `history`, `env` and `printenv`, `set`, `exit`, and `unset`.
-
-## Exiting commands and the shell
-
-To exit out of a command or process, the user can use the `exit` command or send a SIGKILL signal from the parent process. Alternatively, the user can use `ctrl D` which will exit the shell and give an exit status of 0. `Control c (SIGINT)` has been overridden to do nothing, as in many shells.
-
-## Author
-
-This project was initially built as a group project, but is now being rebuilt by the author to further explore the other parts of the project that were not covered by the group.
-
-## Files
-* `README.md` : Current file, contains information about this project
-* `gbk.h` : Header file, contains all prototypes for funcitons used, as well as libriaries
-* `help.h` : Header file, contains all the macros for the help section...
-
-## Additional Features
-
-General Bark includes additional features that are yet to be built. These include:
-- [ ] Adding tab completion for commands
-- [ ] Implementing a command history feature
-- [ ] Allowing for command line editing
-- [ ] Adding the ability to handle signal interrupts
-- [ ] Implementing a built-in command for handling background processes
-- [ ] Adding support for wildcard characters in commands
-
-## Limitations
-
-General Bark is
-
 
 Finally you can run it with 
 ```
@@ -100,4 +65,6 @@ General Bark includes additional features that are yet to be built. These includ
 - [ ] Adding the ability to handle signal interrupts
 - [ ] Implementing a built-in command for handling background processes
 - [ ] Adding support for wildcard characters in commands
+
+
 
