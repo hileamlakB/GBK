@@ -13,8 +13,8 @@ General Bark is a shell on top of the Kernal, hence the title general.
 Its task is to wrap around the Kernal and make interaction more civil,
 hence the name Bark, like the tree bark. The general takes most of the 
 basics of commands that are present in the bash shell and communicate 
-them to the Kernal in a soldierly manner. This is shell is built as part 
-of a learning C. The initial project was done as a group project and 
+them to the Kernal in a soldierly manner. This shell is built as an exercies to  
+learn C. The initial project was done as a group project and 
 was hosted here [here](https://github.com/hileamlakB/simple_shell). 
 The group project was  great and I leanred a lot from it. I amm rebuilding
 this one again from the in order to learn the other parts of the project
