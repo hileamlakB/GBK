@@ -9,53 +9,13 @@
 
 # General Bark
 
-General Bark is a shell on top of the Kernal, hence the title general.
-Its task is to wrap around the Kernal and make interaction more civil,
-hence the name Bark, like the tree bark. The general takes most of the 
-basics of commands that are present in the bash shell and communicate 
-them to the Kernal in a soldierly manner. This shell is built as an exercies to  
-learn C. The initial project was done as a group project and 
-was hosted here [here](https://github.com/hileamlakB/simple_shell). 
-The group project was  great and I leanred a lot from it. I amm rebuilding
-this one again from the in order to learn the other parts of the project
-my team mate worked one.
+General Bark is a C-based shell that sits on top of the kernel. It aims to provide a more user-friendly interface for interacting with the kernel, hence the name "Bark" (like the tree bark). General Bark includes most of the basic commands found in the bash shell and communicates them to the kernel in a streamlined manner. The shell was initially built as a group project for learning C and is now being rebuilt to further explore the other parts of the project that were not covered by the group.
 
-`General` works like the bash and other basic C shells, though it has some 
-to be yet build features.
+## Compilation and installation
 
-The General can be compiled with GCC >=4.8.5.
+General Bark can be compiled with GCC version 4.8.5 or higher. To launch the shell after compiling, simply run `./gbk` which will prompt the terminal with `$ `.
 
-## File
-
-## Example of how to launch the shell after compiling:
-`./gbk`
-
-* Output: prompt to terminal: `$ `
-
-## Syntax
-
-The shell works by using commands given by the user input. The shell commands 
-take in the following syntax: `command name {arguments}[;||&& other command]`. 
-The shell executes a command after it is written by user using the command 
-followed by the arguments until all the commands in one line are completed
-
-`cat gbk.h`
-
-The above example takes in a command by the user followed with the arguments. 
-In this case the command is `cat` (to view file without opening file) followed 
-by argument the file name in this case `gbk.h`.
-
-For more information on cat, you can use the `man` command which will show a manual 
-of the given command or any command you wish to know more information on.
-
-
-### Compilation and installation
-
-
-If you want a controlled install you can clone this repository to your local machine 
-and compile all the `c` files using `GCC`, but if you are looking for a binary you can run
-the program just like others, such as bash. But depending on your machine the compiled version
-might not work so you can compile the program as follows.
+If you want to install the shell, you can clone this repository to your local machine and compile all the `c` files using GCC. Or if you are looking for a binary you can run the program just like others, such as bash. But depending on your machine the compiled version might not work so you can compile the program as follows:
 
 First
 ```
@@ -69,37 +29,75 @@ After this you can use the make file to compile every thing as follows
 ```
 make
 ```
+## Syntax
 
+The shell operates using commands inputted by the user, taking the following syntax: `command name {arguments}[;||&& other command]`. The shell will execute the command along with its arguments until all commands in one line are completed. For example, `cat gbk.h` will take in the command `cat` (to view a file without opening it) followed by the argument `gbk.h` (the file name).
 
-### Builtins
-GBK also contains a couple of built-in functions, which are commands that are within the shell itself. Some of the built-ins are 
+## Built-ins
 
-|Builtin   | use|
-|----------|--------------------------------------------|
-|`alias` | to create aliases|
-|`help` | to get help on built-in functions |
-|`cd` | change working directories|
-|`history` | list of commands that have already been typed|
-|`env` and `printenv` | prints environmental variables|
-|`set` | sets new environmental variables|
-|`exit` | exit out of gbk|
-|`unset` | unsets envrionmental variables|
+General Bark also includes built-in functions, which are commands within the shell itself. Some of these built-ins include `alias`, `help`, `cd`, `history`, `env` and `printenv`, `set`, `exit`, and `unset`.
 
+## Exiting commands and the shell
 
-### Exiting commands and the shell
-To exit out of a command or process the user can't use `ctrl c`. `Control c (SIGINT)` has been overiden to do nothing as in many shells so if one wants to kill a runnign process of GBK they will either have to use the exit command or send a SIGKILL signal from the parent process. 
+To exit out of a command or process, the user can use the `exit` command or send a SIGKILL signal from the parent process. Alternatively, the user can use `ctrl D` which will exit the shell and give an exit status of 0. `Control c (SIGINT)` has been overridden to do nothing, as in many shells.
 
-The user can also utilize the command `ctrl D` which will just exit. When the command `ctrl D` is used an exit status of 0 is given. Using exit, you can input its exit status or it is defaulted to the status of the last command executed.
+## Author
+
+This project was initially built as a group project, but is now being rebuilt by the author to further explore the other parts of the project that were not covered by the group.
 
 ## Files
 * `README.md` : Current file, contains information about this project
 * `gbk.h` : Header file, contains all prototypes for funcitons used, as well as libriaries
-* `help.h` : Header file, contains all the macros for the help section
-* `generalbark.png`: Image in the readme file
+* `help.h` : Header file, contains all the macros for the help section...
 
-### TODO'S
+## Additional Features
 
-### Comments
+General Bark includes additional features that are yet to be built. These include:
+- [ ] Adding tab completion for commands
+- [ ] Implementing a command history feature
+- [ ] Allowing for command line editing
+- [ ] Adding the ability to handle signal interrupts
+- [ ] Implementing a built-in command for handling background processes
+- [ ] Adding support for wildcard characters in commands
 
-### Authors
-* Hileamlak*
+## Limitations
+
+General Bark is
+
+
+Finally you can run it with 
+```
+./gbk
+```
+
+## Syntax
+
+The shell operates using commands inputted by the user, taking the following syntax: `command name {arguments}[;||&& other command]`. The shell will execute the command along with its arguments until all commands in one line are completed. For example, `cat gbk.h` will take in the command `cat` (to view a file without opening it) followed by the argument `gbk.h` (the file name).
+
+## Built-ins
+
+General Bark also includes built-in functions, which are commands within the shell itself. Some of these built-ins include `alias`, `help`, `cd`, `history`, `env` and `printenv`, `set`, `exit`, and `unset`.
+
+## Exiting commands and the shell
+
+To exit out of a command or process, the user can use the `exit` command or send a SIGKILL signal from the parent process. Alternatively, the user can use `ctrl D` which will exit the shell and give an exit status of 0. `Control c (SIGINT)` has been overridden to do nothing, as in many shells.
+
+## Author
+
+This project was initially built as a group project, but is now being rebuilt by the author to further explore the other parts of the project that were not covered by the group.
+
+## Files
+* `README.md` : Current file, contains information about this project
+* `gbk.h` : Header file, contains all prototypes for funcitons used, as well as libriaries
+* `help.h` : Header file, contains all the macros for the help section...
+
+## Additional Features
+
+General Bark includes additional features that are yet to be built. These include:
+- [ ] Adding tab completion for commands
+- [ ] Implementing a command history feature
+- [ ] Allowing for command line editing
+- [ ] Adding the ability to handle signal interrupts
+- [ ] Implementing a built-in command for handling background processes
+- [ ] Adding support for wildcard characters in commands
+
